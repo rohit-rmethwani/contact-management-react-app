@@ -1,34 +1,22 @@
 {
-    "data" : [
-        {
-            "name": "Rohit Methwani",
-            "number": "+91-7666941715",
-            "image": "https://randomuser.me/api/portraits/med/women/83.jpg",
-            "id": 1
-        },
-        {
-            "name": "Raju Methwani",
-            "number": "+91-9322871804",
-            "image": "https://reactnative.dev/img/tiny_logo.png",
-            "id": 2
-        },
-        {
-            "name": "Bharti Methwani",
-            "number": "+91-8999152292",
-            "image": "https://reactnative.dev/img/tiny_logo.png",
-            "id": 3
-        },
-        {
-            "name": "Bhajanlal Methwani",
-            "number": "+91-8999152292",
-            "image": "https://reactnative.dev/img/tiny_logo.png",
-            "id": 4
-        },
-        {
-            "name": "Nikita Methwani",
-            "number": "+91-8999152292",
-            "image": "https://reactnative.dev/img/tiny_logo.png",
-            "id": 5
-        }
-    ]
+  "data": [
+    {
+      "name": "Bharti Methwani",
+      "number": "+91-8999152292",
+      "image": "https://reactnative.dev/img/tiny_logo.png",
+      "id": 3
+    },
+    {
+      "name": "Sneha Methwani",
+      "number": "15163737773",
+      "image": "https://randomuser.me/api/portraits/med/women/85.jpg",
+      "id": 6
+    },
+    {
+      "name": "Rohit Methwani",
+      "number": "15273738",
+      "image": "https://randomuser.me/api/portraits/med/women/85.jpg",
+      "id": 7
+    }
+  ]
 }

@@ -18,7 +18,9 @@ class ContactService {
     }
 
     async put(url, data) {
-
+        console.log("inside put");
+        console.log(data);
+        console.log(url);
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -27,6 +29,7 @@ class ContactService {
             body: JSON.stringify(data)
         });
         const resData = await response.json();
+        console.log(resData);
         return resData;
 
     }

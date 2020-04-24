@@ -19,8 +19,12 @@ export default class ContactsScreen extends Component{
         this.fetchAndSetData();
     }
     
+    componentWillMount(){
+        this.fetchAndSetData();
+    }
+
     pressed(item){
-        this.props.navigation.navigate("Add Contact", {item});
+        this.props.navigation.navigate("Update Contact", {item});
     }
 
     searchKey(e, obj){
@@ -54,7 +58,7 @@ export default class ContactsScreen extends Component{
         return(
             <SafeAreaView style={styles.mainContainer} forceInset={{ bottom: 'never' }}>
                 <View>
-                    <TouchableOpacity style={styles.addButton}>
+                    <TouchableOpacity style={styles.addButton} onPress={(e) => this.props.navigation.navigate("Add Contact")}>
                         <Text style={styles.addButtonText}>+</Text>
                     </TouchableOpacity>
                     <Text style={styles.pageTitle}>Your{"\n"}Contacts</Text>

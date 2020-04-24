@@ -17,6 +17,8 @@ export default class Textfield extends Component{
                 placeholderTextColor = {Color.secondaryText}
                 onChange = {this.props.onChange}
                 returnKeyType = {this.props.returnKeyType}
+                value = {this.props.value}
+                keyboardType = {this.props.type}
             />
             </View>
 
