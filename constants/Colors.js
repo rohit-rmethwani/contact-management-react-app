@@ -9,6 +9,7 @@ const primaryBackground = '#EAF0F7';
 const primaryColorOpaque = '#FFEFD9';
 const grey = '#CCCCCC';
 const lightGrey = '#f2f2f2';
+const borderColor = "#DEDEDE";
 
 const secondaryText = '#ACACAC';
 
@@ -24,5 +25,6 @@ export default {
     primaryBackground,
     primaryColorOpaque,
     grey,
-    lightGrey
+    lightGrey,
+    borderColor
 };

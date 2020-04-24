@@ -1,112 +1,95 @@
 import React, {Component} from 'react';
 import ListCard from "../components/ListCard";
 import TextField from "../components/Textfield";
-import {StyleSheet, View, Text, FlatList, TouchableOpacity} from 'react-native';
+import Button from "../components/Button";
+import {StyleSheet, View, Text, FlatList, TouchableOpacity, SafeAreaView, StatusBar, Image } from 'react-native';
+// import SafeAreaView from 'react-native-safe-area-view';
 import Color from "../constants/Colors";
 import {responsiveFontSize, responsiveHeight, responsiveWidth} from "react-native-responsive-dimensions";
 import {Dimensions} from 'react-native';
+import ContactService from '../services/ContactService';
 
 export default class ContactsScreen extends Component{
-    data = [
-        {
-            name: "Rohit Methwani",
-            number: "+91-7666941715",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 1
-        },
-        {
-            name: "Raju Methwani",
-            number: "+91-9322871804",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 2
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 3
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 4
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 5
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 6
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 7
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 8
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 9
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 10
-        },
-        {
-            name: "Bharti Methwani",
-            number: "+91-8999152292",
-            image: "https://reactnative.dev/img/tiny_logo.png",
-            id: 11
-        }
-    ];
-    pressed(e){
-        alert(e);
-        console.log(e.target.id);
+    constructor(){
+        super();
+        this.state = { data:[], error: "none", fetch:[] };        
     }
+
+    componentDidMount(){
+        this.fetchAndSetData();
+    }
+    
+    pressed(item){
+        this.props.navigation.navigate("Add Contact", {item});
+    }
+
+    searchKey(e, obj){
+        console.log(e.nativeEvent.text);
+        var newArr = [];
+        for(var i=0; i<obj.state.fetch.length; i++){
+            if(obj.state.fetch[i].name.toString().includes(e.nativeEvent.text)){
+               newArr.push(obj.state.fetch[i]);
+            }
+        }
+        if(newArr.length > 0 && (e.nativeEvent.text!="")){
+            obj.setState({data: newArr});
+        }
+        else{
+            obj.setState({data: obj.state.fetch});
+        }
+    }
+
+    fetchAndSetData(){
+        ContactService.get("http://192.168.1.210:3000/data")
+            .then((result)=>this.setState({data: result, fetch: result}))
+            .catch((err) => 
+                {
+                    console.log("Inerror:" + err);
+                    this.setState({error: "flex"});
+                }
+            );
+    }
+
     render(){
         return(
-            <View style={styles.mainContainer}>
+            <SafeAreaView style={styles.mainContainer} forceInset={{ bottom: 'never' }}>
+                <View>
                     <TouchableOpacity style={styles.addButton}>
                         <Text style={styles.addButtonText}>+</Text>
                     </TouchableOpacity>
-                <Text style={styles.pageTitle}>Your{"\n"}Contacts</Text>
-                <TextField placeholder={"Search contact..."}></TextField>
-                <View style={styles.listContainer}>
-                    <FlatList
-                        data = {this.data}
-                        renderItem = {
-                            ({item}) =>
-                            
-                                <ListCard cardTitle={item.name} cardText={item.number} click={this.pressed} image={item.image} data-id = {item.id}></ListCard>
-                            
-                        }
-                        keyExtractor={item => item.id}
-                    />
+                    <Text style={styles.pageTitle}>Your{"\n"}Contacts</Text>
+                    <TextField placeholder={"Search contact..."} onChange={(e) => this.searchKey(e, this)} returnKeyType={"search"}></TextField>
+                    <View style={styles.listContainer}> 
+                        <FlatList
+                            contentContainerStyle={{ paddingBottom: 100}}
+                            data = {this.state.data}
+                            renderItem = {
+                                ({item}) =>
+                                    <ListCard cardTitle={item.name} cardText={item.number} click={(e) => this.pressed(item)} image={item.image} data-id={1}></ListCard>
+                            }
+                            keyExtractor={item => item.id+""}
+                        />
+                    </View>
                 </View>
-            </View>
+                <View style={[{display: this.state.error}, styles.errorContainer ]}>
+                    <Image
+                        source={require("../assets/500.png")}
+                        style={styles.errorImage}
+                    />   
+                    <Button type={"primary"} name={"Refresh"} textType={"primaryText"}></Button>  
+                </View>
+            </SafeAreaView>
         );
     }
 }
+
+
+
 const styles = StyleSheet.create({
     mainContainer:{
         flex: 1,
-        backgroundColor: Color.backgroundColor
+        backgroundColor: Color.white,
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 18
     },
     pageTitle:{
         fontSize: responsiveFontSize(3),
@@ -115,12 +98,13 @@ const styles = StyleSheet.create({
         marginTop: responsiveHeight(1)
     },
     listContainer:{
-        marginTop: responsiveHeight(2)
+        marginTop: responsiveHeight(2),
+        // flex: 1
     },
     addButton:{
         backgroundColor: Color.primaryColor,
         position: "absolute",
-        top: Dimensions.get("window").height - 70,
+        top: Dimensions.get("window").height - 80,
         left:Dimensions.get("screen").width -80,
         zIndex: 9999,
         borderRadius: 50,
@@ -132,5 +116,18 @@ const styles = StyleSheet.create({
         fontSize: responsiveFontSize(4),
         color: Color.white,
         
+    },
+    errorContainer:{
+        flexDirection: "column",
+        paddingHorizontal: responsiveWidth(2)
+    },
+    errorImage:{
+        width: 400,
+        height: 200,
+        resizeMode: 'contain',
+        alignSelf: "center",
+        marginBottom: responsiveHeight(2)
     }
 });
+
+                                        

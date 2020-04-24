@@ -16,7 +16,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        borderColor: Color.borderColor,
+        borderStyle: "solid",
+        borderWidth: 1 
     },
     cardTitle:{
         fontSize: responsiveFontSize(2.3),
